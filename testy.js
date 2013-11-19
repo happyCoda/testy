@@ -2,7 +2,7 @@
 * testy.js JavaScript library. 
 * (c) 2013, happyCoda. 
 * MIT License. 
-* https://github.com/happyCoda/tasty
+* https://github.com/happyCoda/testy
 */
 
 var Testy = {};
