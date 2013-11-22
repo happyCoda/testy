@@ -42,6 +42,9 @@ Testy.isLessThan = function (params) {
 	return result;
 };
 
+// TODO: Implement this method
+Testy.isThrowException = function () {};
+
 Testy.assert = function (params) {
 	var result = '/***********************************************************************\n';
 
