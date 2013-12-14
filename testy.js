@@ -7,54 +7,118 @@
 
 var Testy = {};
 
-Testy.isEquals = function (params) {
+/*
+* Tests if a passed value equals to expected one
+*
+* @param {object} params object with input, expected, message and silent parameters
+* @result {string} result of test in string format
+*/
+Testy.isEqual = function (params) {
 
-	var self = this, result;
+	var self = this, 
+	result;
 
 	result = self.assert({
-		outcome: params.inputVal === params.expectedVal,
-		message: params.message
+		outcome: params.input === params.expected,
+		message: params.message,
+		silent: params.silent
 	});
 
 	return result;
 };
 
+/*
+* Tests if a passed value is greater than expected one
+*
+* @param {object} params object with input, expected, message and silent parameters
+* @result {string} result of test in string format
+*/
 Testy.isGreaterThan = function (params) {
 
-	var self = this, result;
+	var self = this, 
+	result;
 
 	result = self.assert({
-		outcome: params.inputVal > params.expectedVal,
-		message: params.message
+		outcome: params.input > params.expected,
+		message: params.message,
+		silent: params.silent
 	});
 
 	return result;
 };
+
+/*
+* Tests if a passed value is less than expected one
+*
+* @param {object} params object with input, expected, message and silent parameters
+* @result {string} result of test in string format
+*/
 Testy.isLessThan = function (params) {
 
-	var self = this, result;
+	var self = this, 
+	result;
 
 	result = self.assert({
-		outcome: params.inputVal < params.expectedVal,
-		message: params.message
+		outcome: params.input < params.expected,
+		message: params.message,
+		silent: params.silent
 	});
 
 	return result;
 };
 
 // TODO: Implement this method
-Testy.isThrowException = function () {};
+Testy.isThrowException = function (params) {
+	var self = this,
+	error = null,
+	result;
 
-Testy.assert = function (params) {
-	var result = '/***********************************************************************\n';
+	try {
+		(new Function (params.action)());
+	} catch (err) {
+		error = err;
+	}
 
-	result += '******** ' + (params.outcome ? 'PASS! ' : 'FAIL! ') + params.message + ' ********\n';
-
-	result += '****************************************************************************/'
+	result = self.assert({
+		outcome: error === null,
+		message: params.message,
+		silent: params.silent
+	});
 
 	return result;
 };
 
+
+/*
+* Checks if outcome is true than test is passed, othewise - not. Formats the result.
+* Assert is an low-level method which is used by all higher-level methods, such as
+* isEqual, isGreaterThan etc.
+*
+* @param {object} params object with outcome, message and silent parameters
+* @result {string} result of test in string format
+*/
+Testy.assert = function (params) {
+	var result;
+
+	result = '/***********************************************************************\n';
+
+	result += '******** ' + (params.outcome ? 'PASS! ' : 'FAIL! ') + params.message + ' ********\n';
+
+	result += '****************************************************************************/';
+
+	if (!params.silent) {
+		console.log(result);
+	}
+
+	return result;
+};
+
+/*
+* Executes a pack of given tests using specific method accordingly given test type.
+*
+* @packOfTests {array} packOfTests is an array of objects, each of which has a type and params
+* @packOfResults {array} packOfResults is an array of results of tests were conducted
+*/
 Testy.pack = function (packOfTests) {
 	var self = this, 
 	i, 
