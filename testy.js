@@ -67,20 +67,26 @@ Testy.isLessThan = function (params) {
 	return result;
 };
 
-// TODO: Implement this method
+/*
+* Checks if given method throws an exception
+*
+* @param {object} params object with outcome, message and silent parameters
+* @returns {string} result of the test in a string format
+*
+*/
 Testy.isThrowException = function (params) {
 	var self = this,
 	error = null,
 	result;
 
 	try {
-		(new Function (params.action)());
+		params.action(params.argsForAction);
 	} catch (err) {
 		error = err;
 	}
 
 	result = self.assert({
-		outcome: error === null,
+		outcome: typeof error !== null,
 		message: params.message,
 		silent: params.silent
 	});
@@ -95,7 +101,7 @@ Testy.isThrowException = function (params) {
 * isEqual, isGreaterThan etc.
 *
 * @param {object} params object with outcome, message and silent parameters
-* @result {string} result of test in string format
+* @returns {string} result of test in string format
 */
 Testy.assert = function (params) {
 	var result;
@@ -116,8 +122,8 @@ Testy.assert = function (params) {
 /*
 * Executes a pack of given tests using specific method accordingly given test type.
 *
-* @packOfTests {array} packOfTests is an array of objects, each of which has a type and params
-* @packOfResults {array} packOfResults is an array of results of tests were conducted
+* @param {array} packOfTests is a collection of tests and they have types and params
+* @returns {array} packOfResults is an array of results of tests were conducted
 */
 Testy.pack = function (packOfTests) {
 	var self = this, 
